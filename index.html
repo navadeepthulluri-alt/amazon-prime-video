@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prime Video</title><link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="nav">
+  <a class="logo" href="index.html"><b>prime</b> video</a>
+  <nav><a class="active" href="index.html">Home</a><a href="movies.html">Movies</a><a href="series.html">TV shows</a><a href="genres.html">Genres</a><a href="watch-history.html">My Stuff</a></nav>
+  <div class="right"><button class="searchBtn">⌕</button><input id="search" placeholder="Search"><span>EN⌄</span><span class="user">●</span></div>
+</header>
+
+<section class="hero" id="hero">
+  <div class="shade"></div>
+  <div class="heroText">
+    <div class="prime">prime</div>
+    <h1 id="heroTitle">The Boys</h1>
+    <div id="heroMeta" class="meta"></div>
+    <p id="heroDesc">Superheroes are treated as celebrities while a group of vigilantes tries to expose their secrets.</p>
+    <button class="watch" id="heroWatch">▶ Watch now</button>
+    <button class="more" id="heroMore">ⓘ More info</button>
+  </div>
+</section>
+
+<main>
+<section class="rail"><h2>Continue Watching</h2><div class="cards" id="continue"></div></section>
+<section class="rail"><h2>Amazon Originals and Exclusives</h2><div class="cards" id="originals"></div></section>
+<section class="rail"><h2>Popular Movies</h2><div class="cards" id="movies"></div></section>
+<section class="rail"><h2>Popular TV Shows</h2><div class="cards" id="series"></div></section>
+<section class="rail"><h2>Action & Adventure</h2><div class="cards" id="action"></div></section>
+<section class="rail"><h2>Science Fiction</h2><div class="cards" id="scifi"></div></section>
+<section class="rail"><h2>Indian Movies & Series</h2><div class="cards" id="india"></div></section>
+<section class="rail"><h2>Top Rated</h2><div class="cards" id="top"></div></section>
+</main>
+
+<div class="modal hidden" id="modal"><div class="modalBox"><button id="close">×</button><div id="modalContent"></div></div></div>
+<footer><div class="flogo">prime video</div><div>Terms and Privacy Notice &nbsp; Send us feedback &nbsp; Help</div><small>© 2026 Academic Prime Video Database Project</small></footer>
+<script type="module" src="js/index.js"></script>
+</body></html>

@@ -1,0 +1,3 @@
+import {supabase,isConfigured,setupGlobalSearch} from "./supabase.js";import {card,showModal,wireModal} from "./ui.js";
+setupGlobalSearch();wireModal();const grid=document.getElementById("seriesGrid");
+async function load(){let data=[];if(isConfigured()){const{data:rows,error}=await supabase.from("movies").select("*").eq("content_type","Series").order("rating",{ascending:false});if(!error)data=rows||[];else console.error(error)}grid.innerHTML="";if(!data.length)grid.innerHTML="<p>No TV shows found.</p>";data.forEach(m=>grid.appendChild(card(m,showModal)))}load();

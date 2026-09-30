@@ -1,0 +1,3 @@
+import {supabase,isConfigured,setupGlobalSearch} from "./supabase.js";import {card,showModal,wireModal} from "./ui.js";
+setupGlobalSearch();wireModal();const grid=document.getElementById("movieGrid"),search=(new URLSearchParams(location.search).get("search")||"").toLowerCase();
+async function load(){let data=[];if(isConfigured()){const{data:rows,error}=await supabase.from("movies").select("*").eq("content_type","Movie").order("rating",{ascending:false});if(!error)data=rows||[];else console.error(error)}if(search)data=data.filter(m=>m.title.toLowerCase().includes(search));grid.innerHTML="";if(!data.length)grid.innerHTML="<p>No movies found.</p>";data.forEach(m=>grid.appendChild(card(m,showModal)))}load();

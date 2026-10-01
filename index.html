@@ -1,1023 +1,1378 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Prime Video</title>
 
-<link rel="stylesheet" href="./css/style.css?v=20">
+<link rel="stylesheet" href="./css/style.css?v=30">
 
 <style>
-
-.home-card{
-    flex:0 0 190px;
-    background:#18232d;
-    border-radius:4px;
-    overflow:hidden;
-    cursor:pointer;
-    transition:.2s;
+* {
+    box-sizing: border-box;
 }
 
-.home-card:hover{
-    transform:scale(1.06);
-    z-index:5;
-    box-shadow:0 8px 25px #000;
+body {
+    margin: 0;
+    background: #0f171e;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.home-card img{
-    width:100%;
-    height:270px;
-    object-fit:cover;
-    display:block;
+/* NAVIGATION */
+
+.nav {
+    height: 64px;
+    background: #101820;
+    display: flex;
+    align-items: center;
+    padding: 0 4%;
+    gap: 30px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
 }
 
-.home-info{
-    padding:10px;
+.logo {
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+    white-space: nowrap;
 }
 
-.home-title{
-    font-weight:bold;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+.nav nav {
+    display: flex;
+    gap: 22px;
 }
 
-.home-meta{
-    color:#aeb9c0;
-    font-size:12px;
-    margin-top:7px;
-    display:flex;
-    gap:8px;
+.nav nav a {
+    color: #d4dbe0;
+    text-decoration: none;
+    font-size: 15px;
+    padding: 22px 0;
+    white-space: nowrap;
 }
 
-.home-star{
-    color:#f6c945;
+.nav nav a:hover,
+.nav nav a.active {
+    color: white;
+    border-bottom: 3px solid #00a8e1;
 }
 
-.home-play{
-    background:#fff;
-    color:#111;
-    border:0;
-    padding:7px 12px;
-    margin-top:9px;
-    border-radius:3px;
-    cursor:pointer;
-    font-weight:bold;
+.right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.modal{
-    position:fixed;
-    inset:0;
-    background:#000d;
-    z-index:100;
-    display:none;
-    place-items:center;
-    padding:20px;
+.search {
+    background: #1c2832;
+    border: 1px solid #53616b;
+    color: white;
+    padding: 9px 12px;
+    width: 200px;
+    border-radius: 3px;
+    outline: none;
 }
 
-.modal.show{
-    display:grid;
+.user {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #263743;
+    display: grid;
+    place-items: center;
+    color: #8ed7f7;
 }
 
-.modal-box{
-    background:#17232d;
-    width:min(850px,95vw);
-    max-height:90vh;
-    overflow:auto;
-    padding:28px;
-    border-radius:6px;
-    position:relative;
+/* HERO */
+
+.hero {
+    height: 600px;
+    position: relative;
+    background:
+        url("https://image.tmdb.org/t/p/w1280/stTEycfG9928HYGEISBFaG1ngjM.jpg")
+        center/cover no-repeat;
 }
 
-.modal-close{
-    position:absolute;
-    right:15px;
-    top:8px;
-    background:none;
-    border:0;
-    color:white;
-    font-size:32px;
-    cursor:pointer;
+.heroShade {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            90deg,
+            #0b1117 0%,
+            #0b1117dd 25%,
+            #0b111755 65%,
+            transparent 100%
+        ),
+        linear-gradient(
+            0deg,
+            #0f171e 0%,
+            transparent 25%
+        );
 }
 
-.modal-content{
-    display:flex;
-    gap:25px;
+.heroText {
+    position: absolute;
+    left: 7%;
+    top: 25%;
+    width: 500px;
 }
 
-.modal-content img{
-    width:190px;
-    height:285px;
-    object-fit:cover;
+.heroText h1 {
+    font-size: 56px;
+    margin: 12px 0;
 }
 
-.modal-content h2{
-    font-size:32px;
-    margin:5px 0 15px;
+.prime {
+    font-size: 27px;
+    font-weight: bold;
 }
 
-.modal-content p{
-    color:#c9d2d8;
-    line-height:1.6;
+.heroMeta {
+    color: #d5dde2;
+    display: flex;
+    gap: 15px;
+    margin: 15px 0;
 }
 
-.trailer{
-    width:100%;
-    aspect-ratio:16/9;
-    border:0;
-    margin-top:20px;
+.heroText p {
+    color: #e0e5e8;
+    line-height: 1.6;
+    font-size: 16px;
 }
 
-.modalPlay{
-    background:#fff;
-    color:#111;
-    border:0;
-    padding:12px 20px;
-    font-weight:bold;
-    cursor:pointer;
+.heroButtons {
+    margin-top: 20px;
 }
 
-@media(max-width:650px){
+.heroButtons button {
+    border: 0;
+    padding: 13px 23px;
+    margin-right: 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-    .modal-content{
-        flex-direction:column;
+.watchBtn {
+    background: white;
+    color: black;
+}
+
+.moreBtn {
+    background: #42505b;
+    color: white;
+}
+
+/* SECTIONS */
+
+.section {
+    padding: 0 4%;
+    margin: 0 0 38px;
+}
+
+.section h2 {
+    font-size: 21px;
+    margin-bottom: 14px;
+}
+
+.cards {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 5px;
+    scrollbar-width: none;
+}
+
+.cards::-webkit-scrollbar {
+    display: none;
+}
+
+.card {
+    flex: 0 0 190px;
+    background: #18232d;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.06);
+    box-shadow: 0 10px 30px #000;
+    z-index: 5;
+}
+
+.card img {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+    display: block;
+    background: #26343e;
+}
+
+.cardInfo {
+    padding: 10px;
+}
+
+.cardTitle {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cardMeta {
+    color: #aeb9c0;
+    font-size: 12px;
+    margin-top: 7px;
+}
+
+/* MODAL */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: #000d;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modalBox {
+    background: #17232d;
+    width: min(850px, 95vw);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 28px;
+    border-radius: 6px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+    top: 8px;
+    background: none;
+    border: 0;
+    color: white;
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.modalTop {
+    display: flex;
+    gap: 25px;
+}
+
+.modalTop img {
+    width: 190px;
+    height: 285px;
+    object-fit: cover;
+}
+
+.modalTop h2 {
+    font-size: 32px;
+    margin-top: 0;
+}
+
+.modalTop p {
+    color: #c9d2d8;
+    line-height: 1.6;
+}
+
+.modalButton {
+    background: white;
+    color: black;
+    border: 0;
+    padding: 12px 20px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.trailer {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border: 0;
+    margin-top: 20px;
+    display: none;
+}
+
+/* FOOTER */
+
+footer {
+    background: #0b1117;
+    text-align: center;
+    color: #87949c;
+    padding: 40px;
+    margin-top: 30px;
+}
+
+.footerLogo {
+    color: #7dd3f5;
+    font-size: 27px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+/* MOBILE */
+
+@media(max-width: 900px) {
+
+    .nav {
+        gap: 15px;
+        padding: 0 18px;
     }
 
-    .modal-content img{
-        width:150px;
-        height:220px;
+    .nav nav {
+        gap: 12px;
     }
 
+    .search {
+        width: 130px;
+    }
+
+    .heroText {
+        left: 5%;
+        width: 55%;
+    }
+
+    .heroText h1 {
+        font-size: 42px;
+    }
 }
 
+@media(max-width: 650px) {
+
+    .nav {
+        height: auto;
+        flex-wrap: wrap;
+        padding: 12px 15px;
+    }
+
+    .nav nav {
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .nav nav a {
+        padding: 7px 0;
+    }
+
+    .hero {
+        height: 520px;
+    }
+
+    .heroText {
+        width: 80%;
+        top: 20%;
+    }
+
+    .heroText h1 {
+        font-size: 38px;
+    }
+
+    .card {
+        flex-basis: 155px;
+    }
+
+    .card img {
+        height: 220px;
+    }
+
+    .modalTop {
+        flex-direction: column;
+    }
+
+    .modalTop img {
+        width: 150px;
+        height: 220px;
+    }
+}
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- ================= NAVIGATION ================= -->
+<!-- NAVIGATION -->
 
 <header class="nav">
 
-<a class="logo" href="index.html">
-<b>prime</b> video
-</a>
+    <a class="logo" href="index.html">
+        <b>prime</b> video
+    </a>
 
+    <nav>
 
-<nav>
+        <a class="active" href="index.html">Home</a>
 
-<a class="active" href="index.html">
-Home
-</a>
+        <a href="movies.html">Movies</a>
 
-<a href="movies.html">
-Movies
-</a>
+        <a href="series.html">TV shows</a>
 
-<a href="series.html">
-TV shows
-</a>
+        <a href="genres.html">Genres</a>
 
-<a href="genres.html">
-Genres
-</a>
+        <a href="subscription.html">Subscription</a>
 
-<a href="subscription.html">
-Subscription
-</a>
+        <a href="watch-history.html">My Stuff</a>
 
-<a href="watch-history.html">
-My Stuff
-</a>
+    </nav>
 
-</nav>
+    <div class="right">
 
+        <input
+            class="search"
+            id="searchInput"
+            type="text"
+            placeholder="Search"
+            onkeyup="searchMovies()"
+        >
 
-<div class="right">
+        <div class="user">U</div>
 
-<button class="searchBtn">
-⌕
-</button>
-
-<input
-id="search"
-placeholder="Search"
->
-
-<span>
-EN⌄
-</span>
-
-<span class="user">
-●
-</span>
-
-</div>
+    </div>
 
 </header>
 
 
-
-<!-- ================= HERO ================= -->
+<!-- HERO -->
 
 <section class="hero">
 
-<div class="shade"></div>
+    <div class="heroShade"></div>
 
-<div class="heroText">
+    <div class="heroText">
 
-<div class="prime">
-prime
-</div>
+        <div class="prime">
+            prime video
+        </div>
 
-<h1>
-The Boys
-</h1>
+        <h1>The Boys</h1>
 
-<div class="meta">
+        <div class="heroMeta">
+            <span>2024</span>
+            <span>18+</span>
+            <span>4 Seasons</span>
+            <span>Action</span>
+        </div>
 
-<span>
-IMDb 8.7
-</span>
+        <p>
+            Superheroes are often as corrupt as they are powerful.
+            A group of vigilantes sets out to expose the truth and
+            fight against powerful superheroes.
+        </p>
 
-<span>
-2019
-</span>
+        <div class="heroButtons">
 
-<span>
-Series
-</span>
+            <button
+                class="watchBtn"
+                onclick="openMovie(1)"
+            >
+                ▶ Watch Now
+            </button>
 
-<span>
-English
-</span>
+            <button
+                class="moreBtn"
+                onclick="openMovie(1)"
+            >
+                More Info
+            </button>
 
-</div>
+        </div>
 
-<p>
-Superheroes are treated as celebrities while a group
-of vigilantes tries to expose their secrets.
-</p>
-
-
-<button
-class="watch"
-onclick="openMovie(0)"
->
-▶ Watch now
-</button>
-
-
-<button
-class="more"
-onclick="openMovie(0)"
->
-ⓘ More info
-</button>
-
-</div>
+    </div>
 
 </section>
 
 
+<!-- CONTINUE WATCHING -->
 
-<!-- ================= MOVIE ROWS ================= -->
+<section class="section">
 
-<main>
+    <h2>Continue Watching</h2>
 
-
-<section class="rail">
-
-<h2>
-Continue Watching
-</h2>
-
-<div
-class="cards"
-id="continue"
-></div>
+    <div
+        class="cards"
+        id="continueRow"
+    ></div>
 
 </section>
 
 
+<!-- ORIGINALS -->
 
-<section class="rail">
+<section class="section">
 
-<h2>
-Amazon Originals and Exclusives
-</h2>
+    <h2>Amazon Originals and Exclusives</h2>
 
-<div
-class="cards"
-id="originals"
-></div>
-
-</section>
-
-
-
-<section class="rail">
-
-<h2>
-Popular Movies
-</h2>
-
-<div
-class="cards"
-id="movies"
-></div>
+    <div
+        class="cards"
+        id="originalsRow"
+    ></div>
 
 </section>
 
 
+<!-- POPULAR MOVIES -->
 
-<section class="rail">
+<section class="section">
 
-<h2>
-Popular TV Shows
-</h2>
+    <h2>Popular Movies</h2>
 
-<div
-class="cards"
-id="series"
-></div>
-
-</section>
-
-
-
-<section class="rail">
-
-<h2>
-Action & Adventure
-</h2>
-
-<div
-class="cards"
-id="action"
-></div>
+    <div
+        class="cards"
+        id="moviesRow"
+    ></div>
 
 </section>
 
 
+<!-- TV SHOWS -->
 
-<section class="rail">
+<section class="section">
 
-<h2>
-Science Fiction
-</h2>
+    <h2>Popular TV Shows</h2>
 
-<div
-class="cards"
-id="scifi"
-></div>
-
-</section>
-
-
-
-<section class="rail">
-
-<h2>
-Indian Movies & Series
-</h2>
-
-<div
-class="cards"
-id="india"
-></div>
+    <div
+        class="cards"
+        id="seriesRow"
+    ></div>
 
 </section>
 
 
+<!-- ACTION -->
 
-<section class="rail">
+<section class="section">
 
-<h2>
-Top Rated
-</h2>
+    <h2>Action & Adventure</h2>
 
-<div
-class="cards"
-id="top"
-></div>
+    <div
+        class="cards"
+        id="actionRow"
+    ></div>
 
 </section>
 
 
-</main>
+<!-- SCI-FI -->
+
+<section class="section">
+
+    <h2>Science Fiction</h2>
+
+    <div
+        class="cards"
+        id="scifiRow"
+    ></div>
+
+</section>
 
 
+<!-- INDIAN -->
 
-<!-- ================= MOVIE MODAL ================= -->
+<section class="section">
 
-<div
-class="modal"
-id="modal"
+    <h2>Indian Movies & Series</h2>
+
+    <div
+        class="cards"
+        id="indianRow"
+    ></div>
+
+</section>
+
+
+<!-- TOP RATED -->
+
+<section class="section">
+
+    <h2>Top Rated</h2>
+
+    <div
+        class="cards"
+        id="topRow"
+    ></div>
+
+</section>
+
+
+<!-- SEARCH -->
+
+<section
+    class="section"
+    id="searchSection"
+    style="display:none;"
 >
 
-<div class="modal-box">
+    <h2>Search Results</h2>
 
-<button
-class="modal-close"
-onclick="closeMovie()"
+    <div
+        class="cards"
+        id="searchRow"
+    ></div>
+
+</section>
+
+
+<!-- MODAL -->
+
+<div
+    class="modal"
+    id="movieModal"
+    onclick="outsideClose(event)"
 >
-×
-</button>
 
-<div id="modalContent">
+    <div class="modalBox">
+
+        <button
+            class="close"
+            onclick="closeMovie()"
+        >
+            ×
+        </button>
+
+        <div class="modalTop">
+
+            <img
+                id="modalPoster"
+                src=""
+                alt="Poster"
+            >
+
+            <div>
+
+                <h2 id="modalTitle"></h2>
+
+                <div
+                    class="cardMeta"
+                    id="modalMeta"
+                ></div>
+
+                <p id="modalDescription"></p>
+
+                <button
+                    class="modalButton"
+                    onclick="playTrailer()"
+                >
+                    ▶ Watch Trailer
+                </button>
+
+            </div>
+
+        </div>
+
+        <iframe
+            id="trailer"
+            class="trailer"
+            allowfullscreen
+            allow="autoplay; encrypted-media"
+        ></iframe>
+
+    </div>
+
 </div>
 
-</div>
 
-</div>
-
-
-
-<!-- ================= FOOTER ================= -->
+<!-- FOOTER -->
 
 <footer>
 
-<div class="flogo">
-prime video
-</div>
+    <div class="footerLogo">
+        prime video
+    </div>
 
-<div>
-Terms and Privacy Notice &nbsp;
-Send us feedback &nbsp;
-Help
-</div>
+    <p>
+        © 2026 Prime Video Academic Project
+    </p>
 
-<small>
-© 2026 Academic Prime Video Database Project
-</small>
+    <p>
+        Database Management System Project
+    </p>
 
 </footer>
 
 
-
-<!-- ================= JAVASCRIPT ================= -->
-
 <script>
 
+/* =====================================================
+   MOVIE DATA
+===================================================== */
 
 const movies = [
 
-/* 1 */
+    {
+        id: 1,
+        title: "The Boys",
+        year: 2024,
+        type: "Series",
+        genre: "Action",
+        rating: 8.6,
+        language: "English",
 
-{
-title:"The Boys",
-rating:8.7,
-year:2019,
-type:"Series",
-language:"English",
-poster:"https://image.tmdb.org/t/p/w500/stTEycfG9928HYGEISBFaG1ngjM.jpg",
-description:"Superheroes are treated as celebrities while a group of vigilantes tries to expose their secrets.",
-trailer:"https://www.youtube.com/embed/5SKP1_F7ReE"
-},
+        poster:
+        "https://image.tmdb.org/t/p/w500/1F9VQ4Y8.jpg",
 
+        trailer:
+        "https://www.youtube.com/embed/tcrNsIaQkb4",
 
-/* 2 */
+        description:
+        "A group of vigilantes takes on corrupt superheroes who abuse their powers."
+    },
 
-{
-title:"Reacher",
-rating:8.0,
-year:2022,
-type:"Series",
-language:"English",
-poster:"https://image.tmdb.org/t/p/w500/S6h8d4dY8uG9K8Z3qJ7X7w.jpg",
-description:"Jack Reacher investigates dangerous crimes and uncovers hidden conspiracies.",
-trailer:"https://www.youtube.com/embed/gsTHxQJ3M6M"
-},
+    {
+        id: 2,
+        title: "Fallout",
+        year: 2024,
+        type: "Series",
+        genre: "Science Fiction",
+        rating: 8.3,
+        language: "English",
 
+        poster:
+        "https://image.tmdb.org/t/p/w500/AnsSKRDe9p9q5P6kK6K6XxM8.jpg",
 
-/* 3 */
+        trailer:
+        "https://www.youtube.com/embed/V-mugKDQDlg",
 
-{
-title:"Fallout",
-rating:8.3,
-year:2024,
-type:"Series",
-language:"English",
-poster:"https://image.tmdb.org/t/p/w500/AnsWQ4j.jpg",
-description:"Survivors explore a strange post-apocalyptic world.",
-trailer:"https://www.youtube.com/embed/V-mugKD2dD4"
-},
+        description:
+        "Survivors emerge from underground shelters into a dangerous post-apocalyptic world."
+    },
 
+    {
+        id: 3,
+        title: "Interstellar",
+        year: 2014,
+        type: "Movie",
+        genre: "Science Fiction",
+        rating: 8.7,
+        language: "English",
 
-/* 4 */
+        poster:
+        "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBV.jpg",
 
-{
-title:"The Family Man",
-rating:8.7,
-year:2019,
-type:"Series",
-language:"Hindi",
-poster:"https://placehold.co/500x750/18232d/ffffff?text=The+Family+Man",
-description:"A secret intelligence officer balances dangerous missions with family life.",
-trailer:""
-},
+        trailer:
+        "https://www.youtube.com/embed/zSWdZVtXT7E",
 
+        description:
+        "Explorers travel through a wormhole in search of a new home for humanity."
+    },
 
-/* 5 */
+    {
+        id: 4,
+        title: "Inception",
+        year: 2010,
+        type: "Movie",
+        genre: "Science Fiction",
+        rating: 8.8,
+        language: "English",
 
-{
-title:"Panchayat",
-rating:9.0,
-year:2020,
-type:"Series",
-language:"Hindi",
-poster:"https://placehold.co/500x750/18232d/ffffff?text=Panchayat",
-description:"A young graduate becomes a secretary in a rural village.",
-trailer:""
-},
+        poster:
+        "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
 
+        trailer:
+        "https://www.youtube.com/embed/YoHD9XEInc0",
 
-/* 6 */
+        description:
+        "A skilled thief enters people's dreams to steal valuable secrets."
+    },
 
-{
-title:"Mirzapur",
-rating:8.5,
-year:2018,
-type:"Series",
-language:"Hindi",
-poster:"https://placehold.co/500x750/18232d/ffffff?text=Mirzapur",
-description:"A crime drama about power, revenge and rival families.",
-trailer:"https://www.youtube.com/embed/33o3s4Vs4Sw"
-},
+    {
+        id: 5,
+        title: "The Batman",
+        year: 2022,
+        type: "Movie",
+        genre: "Action",
+        rating: 7.8,
+        language: "English",
 
+        poster:
+        "https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg",
 
-/* 7 */
+        trailer:
+        "https://www.youtube.com/embed/mqqft2x_Aa4",
 
-{
-title:"Jawan",
-rating:7.6,
-year:2023,
-type:"Movie",
-language:"Hindi",
-poster:"https://placehold.co/500x750/18232d/ffffff?text=Jawan",
-description:"An action-packed story about a man fighting corruption.",
-trailer:""
-},
+        description:
+        "Batman investigates corruption and a series of mysterious crimes in Gotham City."
+    },
 
+    {
+        id: 6,
+        title: "John Wick",
+        year: 2014,
+        type: "Movie",
+        genre: "Action",
+        rating: 7.4,
+        language: "English",
 
-/* 8 */
+        poster:
+        "https://image.tmdb.org/t/p/w500/fZPSd91yGE9fCcCe6OoQr6E3Bev.jpg",
 
-{
-title:"RRR",
-rating:8.0,
-year:2022,
-type:"Movie",
-language:"Telugu",
-poster:"https://placehold.co/500x750/18232d/ffffff?text=RRR",
-description:"Two legendary revolutionaries form an extraordinary friendship.",
-trailer:""
-},
+        trailer:
+        "https://www.youtube.com/embed/C0BMx-qxsP4",
 
+        description:
+        "An elite assassin returns to the criminal underworld after a personal tragedy."
+    },
 
-/* 9 */
+    {
+        id: 7,
+        title: "The Lord of the Rings",
+        year: 2001,
+        type: "Movie",
+        genre: "Fantasy",
+        rating: 8.8,
+        language: "English",
 
-{
-title:"Interstellar",
-rating:8.7,
-year:2014,
-type:"Movie",
-language:"English",
-poster:"https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
-description:"Explorers travel through space searching for a new home for humanity.",
-trailer:""
-},
+        poster:
+        "https://image.tmdb.org/t/p/w500/6oom5QYQ2yQTMJIbnvbkbl5c.jpg",
 
+        trailer:
+        "https://www.youtube.com/embed/V75dMMIW2B4",
 
-/* 10 */
+        description:
+        "A young hobbit begins an epic journey to destroy a powerful ring."
+    },
 
-{
-title:"The Tomorrow War",
-rating:6.5,
-year:2021,
-type:"Movie",
-language:"English",
-poster:"https://image.tmdb.org/t/p/w500/34nDCQZwaEvsy4CFO5hkGRFDCVU.jpg",
-description:"Soldiers travel into the future to fight an alien invasion.",
-trailer:""
-},
+    {
+        id: 8,
+        title: "Reacher",
+        year: 2025,
+        type: "Series",
+        genre: "Action",
+        rating: 8.1,
+        language: "English",
 
+        poster:
+        "https://image.tmdb.org/t/p/w500/SyLq2m6Jj3h5PqWm9v5qFh3K2M.jpg",
 
-/* 11 */
+        trailer:
+        "https://www.youtube.com/embed/gs3tLQ2sVY8",
 
-{
-title:"John Wick",
-rating:7.4,
-year:2014,
-type:"Movie",
-language:"English",
-poster:"https://image.tmdb.org/t/p/w500/fZPSd91yGE9fCcCe6OoQr6E3Bev.jpg",
-description:"A legendary assassin returns to action.",
-trailer:""
-},
+        description:
+        "Jack Reacher uses his military skills to investigate dangerous criminal conspiracies."
+    },
 
+    {
+        id: 9,
+        title: "KGF Chapter 1",
+        year: 2018,
+        type: "Movie",
+        genre: "Action",
+        rating: 8.2,
+        language: "Kannada",
 
-/* 12 */
+        poster:
+        "https://image.tmdb.org/t/p/w500/ltHlK0QX0Fq7qf8K9.jpg",
 
-{
-title:"The Dark Knight",
-rating:9.0,
-year:2008,
-type:"Movie",
-language:"English",
-poster:"https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-description:"Batman faces a criminal mastermind who throws Gotham into chaos.",
-trailer:""
-}
+        trailer:
+        "https://www.youtube.com/embed/-KfsY-qwBS0",
+
+        description:
+        "A young man rises through the dangerous gold mining empire of Kolar."
+    },
+
+    {
+        id: 10,
+        title: "Pushpa",
+        year: 2021,
+        type: "Movie",
+        genre: "Action",
+        rating: 7.6,
+        language: "Telugu",
+
+        poster:
+        "https://image.tmdb.org/t/p/w500/r1y2QvQh.jpg",
+
+        trailer:
+        "https://www.youtube.com/embed/Q1NKMPhP8PY",
+
+        description:
+        "A labourer rises through the illegal red sandalwood trade."
+    },
+
+    {
+        id: 11,
+        title: "Dangal",
+        year: 2016,
+        type: "Movie",
+        genre: "Drama",
+        rating: 8.3,
+        language: "Hindi",
+
+        poster:
+        "https://image.tmdb.org/t/p/w500/2lECpi35Hnbpa4y46JX0aY3AW.jpg",
+
+        trailer:
+        "https://www.youtube.com/embed/x_7YlGv9u1g",
+
+        description:
+        "A former wrestler trains his daughters to become champions."
+    },
+
+    {
+        id: 12,
+        title: "Drishyam",
+        year: 2015,
+        type: "Movie",
+        genre: "Thriller",
+        rating: 8.2,
+        language: "Hindi",
+
+        poster:
+        "https://image.tmdb.org/t/p/w500/9hP2G5.jpg",
+
+        trailer:
+        "https://www.youtube.com/embed/AuuX2j14NBg",
+
+        description:
+        "A family becomes involved in a crime and tries to protect themselves."
+    }
 
 ];
 
 
+/* =====================================================
+   FALLBACK IMAGE
+===================================================== */
 
-/* ================= CREATE CARD ================= */
+function fallbackImage(img) {
 
+    img.onerror = null;
 
-function createCard(movie,index){
-
-return `
-
-<div
-class="home-card"
-onclick="openMovie(${index})"
->
-
-<img
-src="${movie.poster}"
-alt="${movie.title}"
-onerror="this.src='https://placehold.co/500x750/18232d/ffffff?text=${encodeURIComponent(movie.title)}'"
->
-
-
-<div class="home-info">
-
-<div class="home-title">
-${movie.title}
-</div>
-
-
-<div class="home-meta">
-
-<span class="home-star">
-★ ${movie.rating}
-</span>
-
-<span>
-${movie.year}
-</span>
-
-<span>
-${movie.type}
-</span>
-
-</div>
-
-
-<button
-class="home-play"
-onclick="event.stopPropagation();openMovie(${index})"
->
-▶ Play
-</button>
-
-</div>
-
-</div>
-
-`;
+    img.src =
+    "https://placehold.co/500x750/18232d/ffffff?text=Prime+Video";
 
 }
 
 
+/* =====================================================
+   CREATE CARD
+===================================================== */
 
-/* ================= ROW FUNCTION ================= */
+function createCard(movie) {
+
+    const card =
+        document.createElement("div");
+
+    card.className = "card";
+
+    card.onclick = function() {
+
+        openMovie(movie.id);
+
+    };
+
+    card.innerHTML = `
+
+        <img
+            src="${movie.poster}"
+            alt="${movie.title}"
+            onerror="fallbackImage(this)"
+        >
+
+        <div class="cardInfo">
+
+            <div class="cardTitle">
+                ${movie.title}
+            </div>
+
+            <div class="cardMeta">
+                ⭐ ${movie.rating}
+                &nbsp; • &nbsp;
+                ${movie.year}
+            </div>
+
+        </div>
+    `;
+
+    return card;
+}
 
 
-function showRow(id,list){
+/* =====================================================
+   LOAD ROW
+===================================================== */
 
-const element =
-document.getElementById(id);
+function loadRow(id, data) {
 
-element.innerHTML =
-list
-.map(movie =>
-createCard(
-movie,
-movies.indexOf(movie)
-)
-)
-.join("");
+    const row =
+        document.getElementById(id);
+
+    row.innerHTML = "";
+
+    data.forEach(function(movie) {
+
+        row.appendChild(
+            createCard(movie)
+        );
+
+    });
 
 }
 
 
+/* =====================================================
+   LOAD ALL ROWS
+===================================================== */
 
-/* ================= ROWS ================= */
+function loadHomepage() {
 
-
-showRow(
-"continue",
-[
-movies[0],
-movies[1],
-movies[2],
-movies[4],
-movies[5]
-]
-);
+    loadRow(
+        "continueRow",
+        movies.slice(0, 6)
+    );
 
 
-showRow(
-"originals",
-[
-movies[0],
-movies[1],
-movies[2],
-movies[3],
-movies[4],
-movies[5]
-]
-);
+    loadRow(
+        "originalsRow",
+        movies.slice(0, 8)
+    );
 
 
-showRow(
-"movies",
-movies.filter(
-movie =>
-movie.type === "Movie"
-)
-);
+    loadRow(
+        "moviesRow",
+        movies.filter(function(movie) {
+
+            return movie.type === "Movie";
+
+        })
+    );
 
 
-showRow(
-"series",
-movies.filter(
-movie =>
-movie.type === "Series"
-)
-);
+    loadRow(
+        "seriesRow",
+        movies.filter(function(movie) {
+
+            return movie.type === "Series";
+
+        })
+    );
 
 
-showRow(
-"action",
-movies.filter(
-movie =>
-movie.title === "The Boys" ||
-movie.title === "Reacher" ||
-movie.title === "John Wick" ||
-movie.title === "Jawan"
-)
-);
+    loadRow(
+        "actionRow",
+        movies.filter(function(movie) {
+
+            return movie.genre === "Action";
+
+        })
+    );
 
 
-showRow(
-"scifi",
-movies.filter(
-movie =>
-movie.title === "Fallout" ||
-movie.title === "Interstellar" ||
-movie.title === "The Tomorrow War"
-)
-);
+    loadRow(
+        "scifiRow",
+        movies.filter(function(movie) {
+
+            return movie.genre === "Science Fiction";
+
+        })
+    );
 
 
-showRow(
-"india",
-movies.filter(
-movie =>
-movie.language !== "English"
-)
-);
+    loadRow(
+        "indianRow",
+        movies.filter(function(movie) {
+
+            return ["Hindi", "Telugu", "Kannada"]
+            .includes(movie.language);
+
+        })
+    );
 
 
-showRow(
-"top",
-[
-...movies
-].sort(
-(a,b) =>
-b.rating - a.rating
-)
-);
+    loadRow(
+        "topRow",
+        movies
+        .filter(function(movie) {
 
+            return movie.rating >= 8.2;
 
+        })
+        .sort(function(a, b) {
 
-/* ================= MOVIE MODAL ================= */
+            return b.rating - a.rating;
 
-
-function openMovie(index){
-
-const movie =
-movies[index];
-
-const modal =
-document.getElementById("modal");
-
-const content =
-document.getElementById("modalContent");
-
-
-content.innerHTML = `
-
-<div class="modal-content">
-
-<img
-src="${movie.poster}"
-onerror="this.src='https://placehold.co/500x750/18232d/ffffff?text=${encodeURIComponent(movie.title)}'"
->
-
-
-<div>
-
-<div class="prime">
-prime video
-</div>
-
-
-<h2>
-${movie.title}
-</h2>
-
-
-<div class="small">
-
-<span class="star">
-★ ${movie.rating}
-</span>
-
-<span>
-${movie.year}
-</span>
-
-<span>
-${movie.language}
-</span>
-
-<span>
-${movie.type}
-</span>
-
-</div>
-
-
-<p>
-${movie.description}
-</p>
-
-
-${
-movie.trailer
-
-?
-
-`
-
-<button
-class="modalPlay"
-onclick="playTrailer('${movie.trailer}')"
->
-▶ Play Trailer
-</button>
-
-`
-
-:
-
-`
-
-<button
-class="modalPlay"
-disabled
->
-Trailer unavailable
-</button>
-
-`
-
-}
-
-</div>
-
-</div>
-
-
-<div id="videoBox">
-</div>
-
-`;
-
-modal.classList.add("show");
+        })
+    );
 
 }
 
 
+/* =====================================================
+   MOVIE MODAL
+===================================================== */
 
-/* ================= TRAILER ================= */
+let currentMovie = null;
 
 
-function playTrailer(url){
+function openMovie(id) {
 
-document.getElementById(
-"videoBox"
-).innerHTML = `
+    currentMovie =
+        movies.find(function(movie) {
 
-<iframe
-class="trailer"
-src="${url}?autoplay=1"
-allow="autoplay; encrypted-media; picture-in-picture"
-allowfullscreen>
-</iframe>
+            return movie.id === id;
 
-`;
+        });
+
+
+    if (!currentMovie) return;
+
+
+    const poster =
+        document.getElementById("modalPoster");
+
+
+    poster.src =
+        currentMovie.poster;
+
+
+    poster.onerror =
+        function() {
+
+            this.onerror = null;
+
+            this.src =
+            "https://placehold.co/500x750/18232d/ffffff?text=Prime+Video";
+
+        };
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        currentMovie.title;
+
+
+    document.getElementById(
+        "modalMeta"
+    ).textContent =
+        `⭐ ${currentMovie.rating} • ${currentMovie.year} • ${currentMovie.type} • ${currentMovie.language}`;
+
+
+    document.getElementById(
+        "modalDescription"
+    ).textContent =
+        currentMovie.description;
+
+
+    document.getElementById(
+        "trailer"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "trailer"
+    ).src = "";
+
+
+    document.getElementById(
+        "movieModal"
+    ).classList.add("show");
 
 }
 
 
+/* =====================================================
+   TRAILER
+===================================================== */
 
-/* ================= CLOSE ================= */
+function playTrailer() {
+
+    if (!currentMovie) return;
 
 
-function closeMovie(){
+    const trailer =
+        document.getElementById("trailer");
 
-document
-.getElementById("modal")
-.classList.remove("show");
 
-document.getElementById(
-"videoBox"
-).innerHTML = "";
+    if (
+        currentMovie.trailer &&
+        currentMovie.trailer.includes("youtube.com")
+    ) {
+
+        trailer.src =
+            currentMovie.trailer +
+            "?autoplay=1";
+
+        trailer.style.display =
+            "block";
+
+    } else {
+
+        alert(
+            "Trailer is not available for this title."
+        );
+
+    }
 
 }
 
 
+/* =====================================================
+   CLOSE
+===================================================== */
 
-/* ================= SEARCH ================= */
+function closeMovie() {
+
+    document.getElementById(
+        "movieModal"
+    ).classList.remove("show");
 
 
-document
-.getElementById("search")
-.addEventListener(
-"keydown",
-function(event){
+    document.getElementById(
+        "trailer"
+    ).src = "";
 
-if(event.key === "Enter"){
-
-const search =
-this.value.toLowerCase().trim();
-
-if(!search){
-return;
 }
 
 
-const result =
-movies.filter(
-movie =>
-movie.title
-.toLowerCase()
-.includes(search)
+function outsideClose(event) {
+
+    if (
+        event.target.id === "movieModal"
+    ) {
+
+        closeMovie();
+
+    }
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function searchMovies() {
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value
+        .trim()
+        .toLowerCase();
+
+
+    const section =
+        document.getElementById(
+            "searchSection"
+        );
+
+
+    const row =
+        document.getElementById(
+            "searchRow"
+        );
+
+
+    if (search === "") {
+
+        section.style.display =
+            "none";
+
+        row.innerHTML = "";
+
+        return;
+
+    }
+
+
+    const results =
+        movies.filter(function(movie) {
+
+            return (
+
+                movie.title
+                .toLowerCase()
+                .includes(search)
+
+                ||
+
+                movie.genre
+                .toLowerCase()
+                .includes(search)
+
+                ||
+
+                movie.language
+                .toLowerCase()
+                .includes(search)
+
+            );
+
+        });
+
+
+    section.style.display =
+        "block";
+
+
+    row.innerHTML = "";
+
+
+    results.forEach(function(movie) {
+
+        row.appendChild(
+            createCard(movie)
+        );
+
+    });
+
+
+    if (results.length === 0) {
+
+        row.innerHTML =
+        `<p style="color:#aaa;">
+            No movies found.
+        </p>`;
+
+    }
+
+}
+
+
+/* =====================================================
+   ESC KEY
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            closeMovie();
+
+        }
+
+    }
 );
 
 
-if(result.length){
+/* =====================================================
+   START WEBSITE
+===================================================== */
 
-showRow(
-"movies",
-result
-);
-
-document
-.getElementById("movies")
-.scrollIntoView({
-behavior:"smooth"
-});
-
-}else{
-
-alert(
-"No movie or series found."
-);
-
-}
-
-}
-
-}
-);
-
+loadHomepage();
 
 </script>
 
 </body>
-
 </html>
+```

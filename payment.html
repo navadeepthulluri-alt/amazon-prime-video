@@ -1,0 +1,401 @@
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+"https://qvarytsqvpmbdimcsjvo.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_YOUR_ACTUAL_KEY";;
+
+const supabase =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/* SELECTED PLAN */
+
+const selected =
+JSON.parse(
+    localStorage.getItem("selectedSubscription") || "null"
+);
+
+
+if(!selected){
+
+    document.getElementById("planName").textContent =
+    "No plan selected";
+
+    document.getElementById("duration").textContent =
+    "-";
+
+    document.getElementById("amount").textContent =
+    "₹0";
+
+    document.getElementById("total").textContent =
+    "₹0";
+
+}else{
+
+    document.getElementById("planName").textContent =
+    selected.plan;
+
+    document.getElementById("duration").textContent =
+    selected.duration;
+
+    document.getElementById("amount").textContent =
+    "₹" + selected.amount;
+
+    document.getElementById("total").textContent =
+    "₹" + selected.amount;
+
+}
+
+
+/* PAYMENT METHOD */
+
+document.getElementById("method").addEventListener(
+"change",
+function(){
+
+    const card =
+    document.getElementById("cardFields");
+
+    const upi =
+    document.getElementById("upiFields");
+
+
+    card.style.display =
+    this.value === "Credit Card" ||
+    this.value === "Debit Card"
+    ? "block"
+    : "none";
+
+
+    upi.style.display =
+    this.value === "UPI"
+    ? "block"
+    : "none";
+
+});
+
+
+/* SUBMIT */
+
+document.getElementById("paymentForm")
+.addEventListener("submit", async function(event){
+
+    event.preventDefault();
+
+
+    if(!selected){
+
+        alert("Please select a subscription plan first.");
+
+        location.href =
+        "subscription.html";
+
+        return;
+
+    }
+
+
+    const name =
+    document.getElementById("name")
+    .value.trim();
+
+
+    const email =
+    document.getElementById("email")
+    .value.trim();
+
+
+    const method =
+    document.getElementById("method")
+    .value;
+
+
+    if(!name || !email || !method){
+
+        alert("Please fill all required fields.");
+
+        return;
+
+    }
+
+
+    try{
+
+        /* =========================
+           1. FIND EXISTING USER
+           ========================= */
+
+        let {data:user,error:userError} =
+        await supabase
+        .from("users")
+        .select("*")
+        .eq("email",email)
+        .maybeSingle();
+
+
+        if(userError){
+
+            console.error(userError);
+
+            alert(
+                "Unable to find user. Check Supabase policies."
+            );
+
+            return;
+
+        }
+
+
+        /* =========================
+           2. CREATE USER IF NEEDED
+           ========================= */
+
+        if(!user){
+
+            const result =
+            await supabase
+            .from("users")
+            .insert({
+
+                name:name,
+
+                email:email,
+
+                country:"India",
+
+                age:19
+
+            })
+            .select()
+            .single();
+
+
+            if(result.error){
+
+                console.error(result.error);
+
+                alert(
+                    "Could not create user: " +
+                    result.error.message
+                );
+
+                return;
+
+            }
+
+
+            user =
+            result.data;
+
+        }
+
+
+        /* =========================
+           3. CALCULATE DATES
+           ========================= */
+
+        const startDate =
+        new Date();
+
+
+        const endDate =
+        new Date(startDate);
+
+
+        if(selected.duration === "3 Months"){
+
+            endDate.setMonth(
+                endDate.getMonth() + 3
+            );
+
+        }else{
+
+            endDate.setFullYear(
+                endDate.getFullYear() + 1
+            );
+
+        }
+
+
+        const start =
+        startDate.toISOString()
+        .split("T")[0];
+
+
+        const end =
+        endDate.toISOString()
+        .split("T")[0];
+
+
+        /* =========================
+           4. INSERT SUBSCRIPTION
+           ========================= */
+
+        const subscriptionResult =
+        await supabase
+        .from("subscriptions")
+        .insert({
+
+            user_id:user.user_id,
+
+            plan_name:selected.plan,
+
+            amount:selected.amount,
+
+            start_date:start,
+
+            end_date:end
+
+        })
+        .select()
+        .single();
+
+
+        if(subscriptionResult.error){
+
+            console.error(
+                subscriptionResult.error
+            );
+
+            alert(
+                "Subscription could not be saved: " +
+                subscriptionResult.error.message
+            );
+
+            return;
+
+        }
+
+
+        const subscription =
+        subscriptionResult.data;
+
+
+        /* =========================
+           5. INSERT PAYMENT
+           ========================= */
+
+        const paymentResult =
+        await supabase
+        .from("payments")
+        .insert({
+
+            user_id:user.user_id,
+
+            subscription_id:
+            subscription.subscription_id,
+
+            amount:selected.amount,
+
+            payment_method:method,
+
+            payment_status:"Completed",
+
+            payment_date:start
+
+        });
+
+
+        if(paymentResult.error){
+
+            console.error(
+                paymentResult.error
+            );
+
+            alert(
+                "Payment record could not be saved: " +
+                paymentResult.error.message
+            );
+
+            return;
+
+        }
+
+
+        /* =========================
+           6. SAVE LOCAL COPY
+           ========================= */
+
+        localStorage.setItem(
+            "activeSubscription",
+            JSON.stringify({
+
+                user_id:user.user_id,
+
+                name:user.name,
+
+                email:user.email,
+
+                plan:selected.plan,
+
+                amount:selected.amount,
+
+                duration:selected.duration,
+
+                start_date:start,
+
+                end_date:end
+
+            })
+        );
+
+
+        localStorage.setItem(
+            "lastPayment",
+            JSON.stringify({
+
+                plan:selected.plan,
+
+                amount:selected.amount,
+
+                payment_method:method,
+
+                payment_status:"Completed",
+
+                payment_date:start
+
+            })
+        );
+
+
+        /* =========================
+           7. SUCCESS
+           ========================= */
+
+        document.getElementById(
+            "paymentContainer"
+        ).style.display="none";
+
+
+        document.getElementById(
+            "success"
+        ).style.display="block";
+
+
+        document.getElementById(
+            "successText"
+        ).textContent =
+        `${selected.plan} subscription activated for ${name}. Demo payment of ₹${selected.amount} completed.`;
+
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Something went wrong: " +
+            error.message
+        );
+
+    }
+
+});
+
+</script>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prime Video - Subscription</title>
+
+<link rel="stylesheet" href="./css/style.css">
+
+<style>
+body{
+    background:#0f171e;
+    color:white;
+}
+
+.subscription-page{
+    min-height:calc(100vh - 64px);
+    padding:55px 5%;
+    text-align:center;
+}
+
+.subscription-page h1{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+.subscription-page .subtitle{
+    color:#aeb9c0;
+    margin-bottom:45px;
+    font-size:16px;
+}
+
+.plans{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    align-items:stretch;
+}
+
+.plan{
+    background:#18232d;
+    border:1px solid #33434f;
+    border-radius:8px;
+    padding:28px 22px;
+    text-align:left;
+    position:relative;
+    transition:.2s;
+}
+
+.plan:hover{
+    transform:translateY(-8px);
+    border-color:#00a8e1;
+    box-shadow:0 10px 35px #0008;
+}
+
+.plan.popular{
+    border:2px solid #00a8e1;
+}
+
+.badge{
+    position:absolute;
+    top:-14px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#00a8e1;
+    color:#071017;
+    padding:6px 16px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.plan h2{
+    font-size:25px;
+    margin:5px 0 15px;
+}
+
+.price{
+    font-size:30px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.price span{
+    font-size:13px;
+    color:#9caab3;
+    font-weight:normal;
+}
+
+.plan-description{
+    color:#aeb9c0;
+    min-height:45px;
+}
+
+.plan ul{
+    list-style:none;
+    padding:0;
+    margin:25px 0;
+}
+
+.plan li{
+    padding:9px 0;
+    border-bottom:1px solid #2b3943;
+    color:#d7dfe3;
+}
+
+.plan li::before{
+    content:"✓";
+    color:#00a8e1;
+    font-weight:bold;
+    margin-right:9px;
+}
+
+.plan button{
+    width:100%;
+    border:0;
+    border-radius:4px;
+    padding:13px;
+    background:#00a8e1;
+    color:#071017;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.plan button:hover{
+    background:#18b9ed;
+}
+
+.demo-note{
+    margin:35px auto 0;
+    max-width:750px;
+    background:#16222b;
+    border:1px solid #293944;
+    padding:15px;
+    color:#9eabb3;
+    border-radius:5px;
+    font-size:13px;
+}
+
+footer{
+    margin-top:0;
+}
+
+@media(max-width:1000px){
+    .plans{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+    .plans{
+        grid-template-columns:1fr;
+    }
+
+    .subscription-page{
+        padding:35px 18px;
+    }
+
+    .subscription-page h1{
+        font-size:30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="nav">
+
+<a class="logo" href="index.html">
+<b>prime</b> video
+</a>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="movies.html">Movies</a>
+<a href="series.html">TV shows</a>
+<a href="genres.html">Genres</a>
+<a href="watch-history.html">My Stuff</a>
+</nav>
+
+<div class="right">
+<span>EN⌄</span>
+<span class="user">●</span>
+</div>
+
+</header>
+
+
+<main class="subscription-page">
+
+<h1>Choose your subscription</h1>
+
+<p class="subtitle">
+Enjoy movies, TV shows, Amazon Originals and more.
+</p>
+
+
+<div class="plans">
+
+
+<!-- MOBILE -->
+
+<div class="plan">
+
+<h2>Mobile</h2>
+
+<div class="price">
+₹149 <span>/ 3 months</span>
+</div>
+
+<p class="plan-description">
+Entertainment for one mobile device.
+</p>
+
+<ul>
+<li>HD streaming</li>
+<li>1 device</li>
+<li>Mobile & tablet</li>
+<li>Download available</li>
+</ul>
+
+<button onclick="selectPlan('Mobile',149,'3 Months')">
+GET PLAN
+</button>
+
+</div>
+
+
+<!-- LITE -->
+
+<div class="plan">
+
+<h2>Prime Lite</h2>
+
+<div class="price">
+₹799 <span>/ year</span>
+</div>
+
+<p class="plan-description">
+Affordable entertainment for everyday viewing.
+</p>
+
+<ul>
+<li>HD streaming</li>
+<li>1 device</li>
+<li>Movies & TV shows</li>
+<li>Download available</li>
+</ul>
+
+<button onclick="selectPlan('Prime Lite',799,'1 Year')">
+GET PLAN
+</button>
+
+</div>
+
+
+<!-- PRIME -->
+
+<div class="plan popular">
+
+<div class="badge">
+MOST POPULAR
+</div>
+
+<h2>Prime</h2>
+
+<div class="price">
+₹1,499 <span>/ year</span>
+</div>
+
+<p class="plan-description">
+The complete entertainment experience.
+</p>
+
+<ul>
+<li>Full HD streaming</li>
+<li>3 devices</li>
+<li>All movies & TV shows</li>
+<li>Download available</li>
+</ul>
+
+<button onclick="selectPlan('Prime',1499,'1 Year')">
+GET PLAN
+</button>
+
+</div>
+
+
+<!-- PREMIUM -->
+
+<div class="plan">
+
+<h2>Premium</h2>
+
+<div class="price">
+₹2,499 <span>/ year</span>
+</div>
+
+<p class="plan-description">
+Premium entertainment with 4K quality.
+</p>
+
+<ul>
+<li>4K UHD streaming</li>
+<li>5 devices</li>
+<li>All content</li>
+<li>Download available</li>
+</ul>
+
+<button onclick="selectPlan('Premium',2499,'1 Year')">
+GET PLAN
+</button>
+
+</div>
+
+</div>
+
+
+<div class="demo-note">
+
+<b>Academic Project Notice:</b>
+This is a simulated subscription system created for the
+Amazon Prime Video database project. No real payment is processed.
+
+</div>
+
+</main>
+
+
+<footer>
+
+<div class="flogo">prime video</div>
+
+<div>
+Terms and Privacy Notice &nbsp;
+Send us feedback &nbsp;
+Help
+</div>
+
+<small>
+© 2026 Academic Prime Video Database Project
+</small>
+
+</footer>
+
+
+<script>
+
+function selectPlan(plan,amount,duration){
+
+const data={
+    plan:plan,
+    amount:amount,
+    duration:duration
+};
+
+localStorage.setItem(
+    "selectedSubscription",
+    JSON.stringify(data)
+);
+
+window.location.href="payment.html";
+
+}
+
+</script>
+
+</body>
+</html>
